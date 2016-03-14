@@ -23,5 +23,21 @@ namespace Cryptopack.Test
 
             Assert.IsFalse(StoredPassword.FromString(St2).Check("Wrong password"));
         }
+
+        [TestMethod]
+        public void DigitalSignaturesTest()
+        {
+            var Message1 = "This message is authentic";
+            var Message2 = "This is not";
+
+            var PrivateKey = DigitalSignatures.GeneratePrivateKey();
+            var PublicKey = DigitalSignatures.GetPublicKeyFromPrivateKey(PrivateKey);
+
+            var Signature = DigitalSignatures.SignData(Message1, PrivateKey);
+            //Verify message:
+            Assert.IsTrue(DigitalSignatures.VerifyData(Message1, Signature, PublicKey));
+            Assert.IsFalse(DigitalSignatures.VerifyData(Message2, Signature, PublicKey));
+
+        }
     }
 }

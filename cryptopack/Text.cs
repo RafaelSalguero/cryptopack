@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Cryptopack
 {
-    public static class Text
+     static class Text
     {
         /// <summary>
         /// Convert a SecureString to a string
