@@ -119,7 +119,7 @@ namespace Cryptopack
         }
 
         /// <summary>
-        /// Returns a signed hash of the given data which can be used to prove that the data was signed by the owner of a known public key
+        /// Returns the base 64 encoded signed hash of the given data which can be used to prove that the data was signed by the owner of a known public key
         /// </summary>
         /// <param name="Data">The data to sign</param>
         /// <param name="PrivateKey">The private key</param>
@@ -142,7 +142,7 @@ namespace Cryptopack
             //SignedHashValue.
             var SignedHashValue = RSAFormatter.CreateSignature(HashValue);
 
-            return Text.ByteArrayToHexString(SignedHashValue);
+            return Convert.ToBase64String(SignedHashValue);
         }
 
         /// <summary>
@@ -150,18 +150,19 @@ namespace Cryptopack
         /// </summary>
         /// <param name="Data">The data to verify</param>
         /// <param name="DigitalSignature">The signed hash of the given data</param>
-        /// <param name="PublicKey">The public key of the owner</param>
+        /// <param name="PublicKey">The public key of the owner of the private key used to signing the data</param>
         /// <returns></returns>
         public static bool VerifyData(string Data, string DigitalSignature, string PublicKey)
         {
-            return VerifyData(Text.GetBytesFromString(Data), DigitalSignature, PublicKey);
+            return VerifyData(Convert.FromBase64String(Data), DigitalSignature, PublicKey);
         }
 
         /// <summary>
         /// Returns true if the data is correctly signed
         /// </summary>
-        /// <param name="Data"></param>
-        /// <param name="PublicKey"></param>
+        /// <param name="Data">The data to verify</param>
+        /// <param name="PublicKey">The public key of the owner of the private key used to signing the data</param>
+        /// <param name="DigitalSignature">The digital signature generated with the data and the private key</param>
         /// <returns></returns>
         public static bool VerifyData(byte[] Data, string DigitalSignature, string PublicKey)
         {
