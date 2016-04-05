@@ -8,17 +8,19 @@ using System.Threading.Tasks;
 namespace Cryptopack.Passwords
 {
     /// <summary>
-    /// Data that can be used to validate a password and that can be safely stored, since it's imposible to get the original password back from this information. It is secure to serialize and store this structure without further encryption
+    /// Implementation of the PBKDF2 algorithm that can be used to validate a password that can be safely stored, since it's imposible to get the original password back from this information. It is secure to serialize and store this structure without further encryption
     /// </summary>
     public struct StoredPassword
     {
+        /// <summary>
+        /// Default number of iterations of the PBKDF2 algorithm
+        /// </summary>
         public const int DefaultIterations = 10000;
 
         /// <summary>
         /// Create a new store password from a plain text password
         /// </summary>
-        /// <param name="Password"></param>
-        public StoredPassword(string PlainText)
+        private StoredPassword(string PlainText, int Iterations = DefaultIterations)
         {
             byte[] passSalt = new byte[32];
             using (var R = new RNGCryptoServiceProvider())
@@ -26,7 +28,7 @@ namespace Cryptopack.Passwords
                 R.GetBytes(passSalt);
             }
 
-            Iterations = DefaultIterations;
+            this.Iterations = Iterations;
             Salt = passSalt;
             Hash = HashPassword(Text.GetBytesFromString(PlainText), passSalt, Iterations);
         }
@@ -34,7 +36,6 @@ namespace Cryptopack.Passwords
         /// <summary>
         /// Create a new store password from a plain text with a given salt and iteration count
         /// </summary>
-        /// <param name="Password"></param>
         private StoredPassword(string PlainText, int Iterations, byte[] Salt)
         {
             this.Iterations = Iterations;
@@ -57,17 +58,26 @@ namespace Cryptopack.Passwords
         }
 
         /// <summary>
-        /// Convert an string with Iterations;Hex(Salt);Hex(Hash) to an store password
+        /// Deserialize an string with Iterations;Hex(Salt);Hex(Hash) to an store password
         /// </summary>
-        /// <param name="String"></param>
+        /// <param name="SemicolonSeparatedString">A string with iterations, hex(salt) and hex(hash) separated by semicolons</param>
         /// <returns></returns>
-        public static  StoredPassword FromString(string String)
+        public static StoredPassword FromString(string SemicolonSeparatedString)
         {
-            var S = String.Split(';');
+            var S = SemicolonSeparatedString.Split(';');
             var Ret = new StoredPassword(int.Parse(S[0]), Text.HexStringToByteArray(S[1]), Text.HexStringToByteArray(S[2]));
             return Ret;
         }
 
+        /// <summary>
+        /// Create an irreversible stored password from a Plain text password
+        /// </summary>
+        /// <param name="PlainText">Plain text to store securely</param>
+        /// <returns></returns>
+        public static StoredPassword FromPlainText(string PlainText)
+        {
+            return new StoredPassword(PlainText);
+        }
 
         /// <summary>
         /// Hash iterations

@@ -12,8 +12,8 @@ namespace Cryptopack.Test
         {
             var Password = "123";
 
-            var St1 = new StoredPassword(Password).ToString();
-            var St2 = new StoredPassword(Password).ToString();
+            var St1 = StoredPassword.FromPlainText(Password).ToString();
+            var St2 = StoredPassword.FromPlainText(Password).ToString();
 
             //Two stored password are different for the same password
             Assert.AreNotEqual(St1, St2);

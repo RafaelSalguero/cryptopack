@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Cryptopack
 {
+    /// <summary>
+    /// Provides hashing methods
+    /// </summary>
     public class Hash
     {
         /// <summary>
@@ -17,6 +21,8 @@ namespace Cryptopack
         {
             return SHA1(Text.GetBytesFromString(Data));
         }
+
+
 
         /// <summary>
         /// NOTE: SHA1 algorithm is broken by today standards and should not be used
@@ -44,11 +50,30 @@ namespace Cryptopack
         /// </summary>
         public static string SHA2(byte[] data)
         {
+            return Text.ByteArrayToHexString(SHA2Bin(data));
+        }
+
+        /// <summary>
+        /// Get the SHA256 of the given data.
+        /// </summary>
+        public static byte[] SHA2Bin(byte[] data)
+        {
             using (SHA256Managed sha2 = new SHA256Managed())
             {
-                var hash = sha2.ComputeHash(data);
-                return Text.ByteArrayToHexString(hash);
+                return sha2.ComputeHash(data);
             }
         }
+
+        /// <summary>
+        /// Get the SHA256 of the given data.
+        /// </summary>
+        public static byte[] SHA2Bin(Stream data)
+        {
+            using (SHA256Managed sha2 = new SHA256Managed())
+            {
+                return sha2.ComputeHash(data);
+            }
+        }
+
     }
 }
