@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("cryptopack")]
 [assembly: AssemblyDescription("Encapsulated cryptographic primitives for easy use")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Rafael Salguero")]
+[assembly: AssemblyCompany("Rafael Salguero Iturríos")]
 [assembly: AssemblyProduct("Cryptopack")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
