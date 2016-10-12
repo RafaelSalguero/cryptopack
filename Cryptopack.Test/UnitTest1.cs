@@ -18,10 +18,10 @@ namespace Cryptopack.Test
             //Two stored password are different for the same password
             Assert.AreNotEqual(St1, St2);
 
-            Assert.IsTrue(StoredPassword.FromString(St1).Check(Password));
-            Assert.IsTrue(StoredPassword.FromString(St2).Check(Password));
+            Assert.IsTrue(StoredPassword.TryFromString(St1).Value.Check(Password));
+            Assert.IsTrue(StoredPassword.TryFromString(St2).Value.Check(Password));
 
-            Assert.IsFalse(StoredPassword.FromString(St2).Check("Wrong password"));
+            Assert.IsFalse(StoredPassword.TryFromString(St2).Value.Check("Wrong password"));
         }
 
         [TestMethod]

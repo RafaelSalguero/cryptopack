@@ -154,7 +154,7 @@ namespace Cryptopack
         /// <returns></returns>
         public static bool VerifyData(string Data, string DigitalSignature, string PublicKey)
         {
-            return VerifyData(Convert.FromBase64String(Data), DigitalSignature, PublicKey);
+            return VerifyData(Text.GetBytesFromString(Data), DigitalSignature, PublicKey);
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Cryptopack
         public static bool VerifyData(byte[] Data, string DigitalSignature, string PublicKey)
         {
             var HashValue = Text.HexStringToByteArray(Hash.SHA2(Data));
-            var SignedHashValue = Text.HexStringToByteArray(DigitalSignature);
+            var SignedHashValue = Convert.FromBase64String(DigitalSignature);
             var Params =
                         Newtonsoft.Json.JsonConvert.DeserializeObject<RSAParametersSerializable>(PublicKey);
 
