@@ -11,8 +11,10 @@ namespace Cryptopack.Test
         [TestMethod]
         public void SymmetricTest()
         {
+            var pk = DigitalSignatures.GetPublicKeyFromPrivateKey(DigitalSignatures.GeneratePrivateKey());
+
             var texto = "Hola a todos";
-            var pass = "123456";
+            var pass = Symmetric.PasswordFromPublicKey(pk);
 
             var cipher1 = Symmetric.SimpleSymmetricEncrypt(texto, pass);
             var cipher2 = Symmetric.SimpleSymmetricEncrypt(texto, pass);
@@ -99,9 +101,9 @@ namespace Cryptopack.Test
             var firma = DigitalSignatures.SignData(ObtenerCadenaOriginal(informacion), PrivateKey);
 
             //Cualquier otra persona
-            var resultado = DigitalSignatures.VerifyData( ObtenerCadenaOriginal(informacion), firma, PublicKey);
+            var resultado = DigitalSignatures.VerifyData(ObtenerCadenaOriginal(informacion), firma, PublicKey);
 
-            informacion = new DeclaracionDocumento(1, new DateTime(2017,7, 1), 39);
+            informacion = new DeclaracionDocumento(1, new DateTime(2017, 7, 1), 39);
 
             var resultado2 = DigitalSignatures.VerifyData(ObtenerCadenaOriginal(informacion), firma, PublicKey);
 

@@ -14,7 +14,7 @@ namespace Cryptopack
     public static class DigitalSignatures
     {
         [Serializable]
-        class RSAParametersSerializable : ISerializable
+        public class RSAParametersSerializable : ISerializable
         {
             private RSAParameters _rsaParameters;
 

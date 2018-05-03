@@ -14,6 +14,19 @@ namespace Cryptopack
     public static class Symmetric
     {
         /// <summary>
+        /// Obtiene una contraseña derivada a de una llave pública
+        /// </summary>
+        /// <param name="publicKey"></param>
+        /// <returns></returns>
+        public static string PasswordFromPublicKey(string publicKey)
+        {
+            var Params =
+              Newtonsoft.Json.JsonConvert.DeserializeObject<DigitalSignatures.RSAParametersSerializable>(publicKey);
+
+            return Text.ByteArrayToHexString(Params.Modulus) + ";" + Text.ByteArrayToHexString(Params.Exponent);
+        }
+
+        /// <summary>
         /// Realiza una encripción simétrica usando el algoritmo AES
         /// </summary>
         /// <param name="text">Texto a encriptar</param>
@@ -33,7 +46,7 @@ namespace Cryptopack
                 System.Security.Cryptography.Rfc2898DeriveBytes rfc2898 =
                     new System.Security.Cryptography.Rfc2898DeriveBytes(password, salt, Rfc2898KeygenIterations);
                 aes.Key = rfc2898.GetBytes(KeyStrengthInBytes);
-                byte[] IV = Text.HexStringToByteArray( text.Split(';')[0]);
+                byte[] IV = Text.HexStringToByteArray(text.Split(';')[0]);
                 cipherText = Text.HexStringToByteArray(text.Split(';')[1]);
                 aes.IV = IV;
 
