@@ -80,7 +80,6 @@ namespace Cryptopack.Passwords
             {
                 return null;
             }
-            
         }
 
         /// <summary>

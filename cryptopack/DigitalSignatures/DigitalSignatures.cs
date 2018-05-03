@@ -87,7 +87,7 @@ namespace Cryptopack
             RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
             var R = RSA.ExportParameters(true);
 
-            var ret = Newtonsoft.Json.JsonConvert.SerializeObject(new RSAParametersSerializable(R));
+            var ret = Newtonsoft.Json.JsonConvert.SerializeObject(new RSAParametersSerializable(R), Newtonsoft.Json.Formatting.Indented);
             return ret;
         }
 
@@ -104,7 +104,7 @@ namespace Cryptopack
             DRet.Modulus = Params.Modulus;
             DRet.Exponent = Params.Exponent;
 
-            var ret = Newtonsoft.Json.JsonConvert.SerializeObject(new RSAParametersSerializable(DRet));
+            var ret = Newtonsoft.Json.JsonConvert.SerializeObject(new RSAParametersSerializable(DRet), Newtonsoft.Json.Formatting.Indented);
             return ret;
         }
 
