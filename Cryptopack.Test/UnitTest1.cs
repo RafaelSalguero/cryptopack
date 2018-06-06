@@ -56,6 +56,22 @@ namespace Cryptopack.Test
         }
 
         [TestMethod]
+        public void DeserializePublicKey()
+        {
+            var cadena = @"
+{
+  ""Exponent"": ""AQAB"",
+  ""Modulus"": ""xCDIeXAua+9SQhkVJ/6DW4Dn0lBxd+xAgeVhyHoeZezSZx/B6uGFFHoEdI+g/myizF8rPD43mvG5DOOG+i2y3Dw4fx8syixfA1OFEr4fk9kKy98he8khsL/nxig7qG/2e+l2CUdLiEDmtWJd3v7kRNBJZa0YXcXqlfbSzATIf2k="",
+}
+";
+            var Params =
+              Newtonsoft.Json.JsonConvert.DeserializeObject<DigitalSignatures.RSAParametersSerializable>(cadena);
+
+            Assert.AreEqual(null, Params.D);
+            CollectionAssert.AreEqual(Convert.FromBase64String("xCDIeXAua+9SQhkVJ/6DW4Dn0lBxd+xAgeVhyHoeZezSZx/B6uGFFHoEdI+g/myizF8rPD43mvG5DOOG+i2y3Dw4fx8syixfA1OFEr4fk9kKy98he8khsL/nxig7qG/2e+l2CUdLiEDmtWJd3v7kRNBJZa0YXcXqlfbSzATIf2k="), Params.Modulus);
+        }
+
+        [TestMethod]
         public void DigitalSignaturesTest()
         {
             var Message1 = "This message is authentic";

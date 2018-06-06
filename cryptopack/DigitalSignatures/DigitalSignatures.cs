@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Cryptopack
 {
@@ -13,11 +14,11 @@ namespace Cryptopack
     /// </summary>
     public static class DigitalSignatures
     {
-        [Serializable]
-        public class RSAParametersSerializable : ISerializable
+        public class RSAParametersSerializable 
         {
             private RSAParameters _rsaParameters;
 
+            [JsonIgnore]
             public RSAParameters RSAParameters
             {
                 get
@@ -50,33 +51,7 @@ namespace Cryptopack
             public byte[] P { get { return _rsaParameters.P; } set { _rsaParameters.P = value; } }
 
             public byte[] Q { get { return _rsaParameters.Q; } set { _rsaParameters.Q = value; } }
-
-            public RSAParametersSerializable(SerializationInfo information, StreamingContext context)
-            {
-                _rsaParameters = new RSAParameters()
-                {
-                    D = (byte[])information.GetValue("D", typeof(byte[])),
-                    DP = (byte[])information.GetValue("DP", typeof(byte[])),
-                    DQ = (byte[])information.GetValue("DQ", typeof(byte[])),
-                    Exponent = (byte[])information.GetValue("Exponent", typeof(byte[])),
-                    InverseQ = (byte[])information.GetValue("InverseQ", typeof(byte[])),
-                    Modulus = (byte[])information.GetValue("Modulus", typeof(byte[])),
-                    P = (byte[])information.GetValue("P", typeof(byte[])),
-                    Q = (byte[])information.GetValue("Q", typeof(byte[]))
-                };
-            }
-
-            public void GetObjectData(SerializationInfo info, StreamingContext context)
-            {
-                info.AddValue("D", _rsaParameters.D);
-                info.AddValue("DP", _rsaParameters.DP);
-                info.AddValue("DQ", _rsaParameters.DQ);
-                info.AddValue("Exponent", _rsaParameters.Exponent);
-                info.AddValue("InverseQ", _rsaParameters.InverseQ);
-                info.AddValue("Modulus", _rsaParameters.Modulus);
-                info.AddValue("P", _rsaParameters.P);
-                info.AddValue("Q", _rsaParameters.Q);
-            }
+           
         }
         /// <summary>
         /// Gets a JSON serialized random RSA private key
